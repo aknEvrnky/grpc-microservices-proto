@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/aknEvrnky/grpc-microservices-proto/prder";
+option go_package = "github.com/aknEvrnky/grpc-microservices-proto/order";
 
 message CreateOrderRequest {
     int64 user_id = 1;
