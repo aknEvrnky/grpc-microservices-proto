@@ -4,6 +4,7 @@ SERVICE_NAME=$1
 RELEASE_VERSION=$2
 USER_NAME=$3
 EMAIL=$4
+REPO_PATH=$5
 
 git config user.name "$USER_NAME"
 git config user.email "$EMAIL"
@@ -17,7 +18,7 @@ protoc --go_out=./golang --go_opt=paths=source_relative \
  ./${SERVICE_NAME}/*.proto
 cd golang/${SERVICE_NAME}
 go mod init \
-  github.com/aknevrnky/grpc-microservices-proto/golang/${SERVICE_NAME} || true
+  github.com/${REPO_PATH}/golang/${SERVICE_NAME} || true
 go mod tidy
 cd ../../
 git add . && git commit -am "proto update" || true

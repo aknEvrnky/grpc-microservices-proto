@@ -3,24 +3,62 @@ on:
   push:
     tags:
       - v**
+permissions:
+  contents: write  # Grant write permission to contents
+
 jobs:
-  protoc:
-    name: "Generate"
+  generate-order:
+    name: "Generate Order"
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: ["order", "payment", "shipping"]
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
         with:
           go-version: 1.22
       - uses: actions/checkout@v2
-      - name: Etract Release Version
+      - name: Extract Release Version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: "Generate for Golang"
+      - name: "Generate for Golang - Order"
         shell: bash
         run: |
           chmod +x "${GITHUB_WORKSPACE}/golang_pb_generator.sh"
           ls -alh ${GITHUB_WORKSPACE}
-          ./golang_pb_generator.sh ${{ matrix.service }} ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
+          ./golang_pb_generator.sh order ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
+
+  generate-payment:
+    name: "Generate Payment"
+    runs-on: ubuntu-latest
+    needs: generate-order
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.22
+      - uses: actions/checkout@v2
+      - name: Extract Release Version
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: "Generate for Golang - Payment"
+        shell: bash
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/golang_pb_generator.sh"
+          ls -alh ${GITHUB_WORKSPACE}
+          ./golang_pb_generator.sh payment ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
+
+  generate-shipping:
+    name: "Generate Shipping"
+    runs-on: ubuntu-latest
+    needs: generate-payment
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.22
+      - uses: actions/checkout@v2
+      - name: Extract Release Version
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: "Generate for Golang - Shipping"
+        shell: bash
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/golang_pb_generator.sh"
+          ls -alh ${GITHUB_WORKSPACE}
+          ./golang_pb_generator.sh shipping ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com ${{ github.repository }}
