@@ -1,4 +1,4 @@
-module github.com/aknevrnky/grpc-microservices-proto/golang/payment
+module github.com/aknEvrnky/grpc-microservices-proto/golang/payment
 
 go 1.22.4
 
