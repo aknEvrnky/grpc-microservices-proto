@@ -10,12 +10,13 @@ git config user.name "$USER_NAME"
 git config user.email "$EMAIL"
 git fetch --all && git checkout main
 
+echo "Installing protoc and golang plugins"
 sudo apt-get install -y protobuf-compiler golang-goprotobuf-dev
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-protoc --go_out=./golang --go_opt=paths=source_relative \
-  --go-grpc_out=./golang --go-grpc_opt=paths=source_relative \
- ./${SERVICE_NAME}/*.proto
+
+echo "Generating golang code for ${SERVICE_NAME} with release version ${RELEASE_VERSION} and repo path ${REPO_PATH}"
+protoc --go_out=./golang --go_opt=paths=source_relative --go-grpc_out=./golang --go-grpc_opt=paths=source_relative ./${SERVICE_NAME}/*.proto
 cd golang/${SERVICE_NAME}
 go mod init \
   github.com/${REPO_PATH}/golang/${SERVICE_NAME} || true
