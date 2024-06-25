@@ -21,6 +21,6 @@ jobs:
       - name: "Generate for Golang"
         shell: bash
         run: |
-          chmod +x "${GITHUB_WORKSPACE}/protoc.sh"
+          chmod +x "${GITHUB_WORKSPACE}/golang_pb_generator.sh"
           ls -alh ${GITHUB_WORKSPACE}
-          ./protoc.sh ${{ matrix.service }} ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
+          ./golang_pb_generator.sh ${{ matrix.service }} ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
