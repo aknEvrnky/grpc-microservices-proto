@@ -23,7 +23,7 @@ jobs:
         run: |
           chmod +x "${GITHUB_WORKSPACE}/golang_pb_generator.sh"
           ls -alh ${GITHUB_WORKSPACE}
-          ./golang_pb_generator.sh order ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
+          ./golang_pb_generator.sh order ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com ${{ github.repository }}
 
   generate-payment:
     name: "Generate Payment"
@@ -42,7 +42,7 @@ jobs:
         run: |
           chmod +x "${GITHUB_WORKSPACE}/golang_pb_generator.sh"
           ls -alh ${GITHUB_WORKSPACE}
-          ./golang_pb_generator.sh payment ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
+          ./golang_pb_generator.sh payment ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com ${{ github.repository }}
 
   generate-shipping:
     name: "Generate Shipping"
